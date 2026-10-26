@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Irrigation Pivot Manager | مدير البيفوتات</title>
+<meta name="description" content="Professional offline irrigation pivot management app by Eng. Mohamed Ibrahim (Firmo).">
+<meta name="theme-color" content="#0f766e">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pivot Manager">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="brand">
+    <div class="logo"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 24 L24 5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M24 24 L38 33" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="24" r="4" fill="currentColor"/></svg></div>
+    <div><h1 data-i18n="appTitle">مدير البيفوتات</h1><p data-i18n="appSubtitle">إدارة احترافية لبيانات الري المحوري</p></div>
+  </div>
+  <div class="controls">
+    <button id="installBtn" class="install-btn hidden"><span class="i-icon">⬇️</span><span data-i18n="install">تثبيت التطبيق</span></button>
+    <button id="langBtn" class="icon-btn">🌐<span id="langLabel">EN</span></button>
+    <button id="themeBtn" class="icon-btn">🌙</button>
+  </div>
+</header>
+<main>
+  <section class="hero card">
+    <div><h2 data-i18n="heroTitle">نظّم بيانات كل بيفوت في مكان واحد</h2><p data-i18n="heroText">أضف عددًا غير محدود من البيفوتات، استدعِ بياناتها بضغطة على اسمها، ثم عدّلها أو احذفها بسهولة. تعمل جميع البيانات محليًا على جهازك دون إنترنت.</p></div>
+    <div class="hero-stats">
+      <div class="stat"><strong id="totalPivots">0</strong><span data-i18n="statPivots">بيفوت</span></div>
+      <div class="stat"><strong id="totalArea">0</strong><span data-i18n="statArea">فدان</span></div>
+      <div class="stat"><strong id="totalFlow">0</strong><span data-i18n="statFlow">م³/س</span></div>
+    </div>
+  </section>
+  <section class="layout">
+    <section class="card form-card">
+      <div class="section-head"><h2 id="formTitle" data-i18n="addPivot">إضافة بيفوت</h2><button id="resetForm" class="ghost-btn" data-i18n="newPivot">بيفوت جديد</button></div>
+      <form id="pivotForm">
+        <input type="hidden" id="pivotId">
+        <div class="grid">
+          <label><span data-i18n="fieldName">اسم البيفوت</span><input id="name" required placeholder="Pivot A-01"></label>
+          <label><span data-i18n="fieldCrop">المحصول</span><input id="crop" placeholder="القمح / Wheat"></label>
+          <label><span data-i18n="fieldArea">المساحة (فدان)</span><input id="area" type="number" min="0" step="0.01"></label>
+          <label><span data-i18n="fieldFlow">معدل التدفق (م³/ساعة)</span><input id="flow" type="number" min="0" step="0.01"></label>
+          <label><span data-i18n="fieldPressure">الضغط (بار)</span><input id="pressure" type="number" min="0" step="0.01"></label>
+          <label><span data-i18n="fieldLength">طول الجسر (م)</span><input id="length" type="number" min="0" step="0.01"></label>
+          <label><span data-i18n="fieldNozzles">عدد الفوهات</span><input id="nozzles" type="number" min="0" step="1"></label>
+          <label><span data-i18n="fieldStatus">الحالة</span><select id="status"><option value="active" data-i18n="statusActive">يعمل</option><option value="maintenance" data-i18n="statusMaintenance">صيانة</option><option value="stopped" data-i18n="statusStopped">متوقف</option></select></label>
+        </div>
+        <label><span data-i18n="fieldNotes">ملاحظات فنية</span><textarea id="notes" rows="3"></textarea></label>
+        <div class="actions"><button type="submit" class="primary-btn" id="saveBtn" data-i18n="save">حفظ البيفوت</button><button type="button" id="deleteBtn" class="danger-btn hidden" data-i18n="delete">حذف</button></div>
+      </form>
+    </section>
+    <section class="card list-card">
+      <div class="section-head"><h2 data-i18n="savedPivots">البيفوتات المحفوظة</h2><input id="search" class="search" type="search" data-i18n-placeholder="search" placeholder="ابحث بالاسم أو المحصول..."></div>
+      <div id="pivotsList" class="pivot-list"></div>
+      <p id="emptyState" class="empty" data-i18n="emptyState">لا توجد بيفوتات محفوظة بعد. أضف أول بيفوت من النموذج.</p>
+    </section>
+  </section>
+  <section class="card contact-card" id="contact">
+    <div class="designer">
+      <div class="avatar">MI</div>
+      <div><p class="designer-label" data-i18n="designedBy">تصميم مهندس</p><h2>محمد إبراهيم <span class="firmo">(Firmo)</span></h2><p class="designer-role" data-i18n="designerRole">مهندس تصميم وتطوير تطبيقات الري</p></div>
+    </div>
+    <p class="contact-hint" data-i18n="contactHint">اضغط على أي رمز أو اسم التطبيق للتواصل مباشرة عبر التطبيق الرسمي المثبت على هاتفك.</p>
+    <div class="contact-grid">
+      <a class="contact-tile email" href="mailto:mohamed.ibrahim11617@gmail.com"><span class="c-icon">✉️</span><span>Email</span><small>mohamed.ibrahim11617@gmail.com</small></a>
+      <a class="contact-tile whatsapp" href="https://wa.me/qr/QIZ446FGUAGGD1" target="_blank" rel="noopener"><span class="c-icon">💬</span><span>WhatsApp</span><small>wa.me/qr/QIZ446FGUAGGD1</small></a>
+      <a class="contact-tile telegram" href="https://t.me/FR6060ME" target="_blank" rel="noopener"><span class="c-icon">✈️</span><span>Telegram</span><small>@FR6060ME</small></a>
+      <a class="contact-tile linkedin" href="https://www.linkedin.com/in/mohamed-ebrahim-771b0540a" target="_blank" rel="noopener"><span class="c-icon">in</span><span>LinkedIn</span><small>Mohamed Ebrahim</small></a>
+      <a class="contact-tile facebook" href="https://www.facebook.com/share/1JHu4fGCXa/" target="_blank" rel="noopener"><span class="c-icon">f</span><span>Facebook</span><small>Mohamed Ibrahim</small></a>
+      <a class="contact-tile x" href="https://x.com/Firmo13MH" target="_blank" rel="noopener"><span class="c-icon">𝕏</span><span>X</span><small>@Firmo13MH</small></a>
+    </div>
+  </section>
+</main>
+<footer class="app-footer"><p>© <span id="year"></span> Eng. Mohamed Ibrahim — Firmo</p><p data-i18n="offlineNote">يعمل التطبيق كـ Web App بدون إنترنت</p></footer>
+<div id="installHint" class="modal hidden"><div class="modal-card"><h3 data-i18n="installTitle">تثبيت التطبيق</h3><p id="installHintText"></p><button id="closeHint" class="primary-btn" data-i18n="ok">حسنًا</button></div></div>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body></html>
